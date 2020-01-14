@@ -10,7 +10,12 @@ class Module extends \yii\base\Module
 	/**
 	 * {@inheritdoc}
 	 */
-	public $controllerNamespace = 'common\modules\token\controllers';
+
+	public $controllerNamespace = 'claylua\token\controllers';
+  public $issuer = "http://example.com";
+  public $audience = "http://example.org";
+  public $id="4f1g23a12aa";
+
 
 	/**
 	 * {@inheritdoc}

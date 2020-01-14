@@ -30,7 +30,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": ""
+            "url": "https://packagist.org/packages/claylua/yii2-access-token"
         }
     ]
 }
