@@ -20,7 +20,6 @@
     ],
     "require": {
         "yiisoft/yii2": "~2.0.0",
-        "2amigos/yii2-usuario": "~1.0",
         "sizeg/yii2-jwt": "^2.0"
     },
     "autoload": {
