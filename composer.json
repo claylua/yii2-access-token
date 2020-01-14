@@ -24,7 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "claylua\\accesstoken\\": "./src/token"
+            "claylua\\token\\": "./src/token"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "claylua\\token\\": "./src/token"
         }
     },
     "repositories": [
