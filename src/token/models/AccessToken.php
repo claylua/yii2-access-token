@@ -41,10 +41,11 @@ class AccessToken extends \yii\db\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['user_id', 'token'], 'required'],
-			[['user_id', 'status'], 'integer'],
+			// [['user_id', 'token'], 'required'],
+			// [['user_id', 'status'], 'integer'],
 			// [['updated_at', 'created_at'], 'safe'],
-			[['token'], 'string', 'max' => 12],
+      [['created_at', 'updated_at'], 'date', 'format'=>'dd-MM-yyyy', 'message'=>'{attribute} must be DD/MM/YYYY format.'             ],
+			[['token'], 'string', 'max' => 255],
 			[['token'], 'unique'],
 			[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
 		];

@@ -12,9 +12,10 @@ class Module extends \yii\base\Module
 	 */
 
 	public $controllerNamespace = 'claylua\token\controllers';
-  public $issuer = "http://example.com";
-  public $audience = "http://example.org";
-  public $id="4f1g23a12aa";
+
+	public $issuer = "http://example.com";
+	public $audience = "http://example.org";
+	public $id="4f1g23a12aa";
 
 
 	/**
@@ -24,9 +25,8 @@ class Module extends \yii\base\Module
 	{
 		parent::init();
 		\Yii::configure($this, require __DIR__ . '/config/main.php');
-		$this->modules = [
-		];
 
 		// custom initialization code goes here
 	}
+
 }

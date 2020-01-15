@@ -18,9 +18,9 @@ class m200114_065836_create_token_table extends Migration
       'id' => $this->primaryKey(),
       'user_id' => $this->integer()->notNull(),
       'status' => $this->integer()->defaultValue(1),
-      'token' => $this->string(12)->notNull()->unique(),
-      'updated_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
-      'created_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP'
+      'token' => $this->string(255)->notNull()->unique(),
+      'updated_at' => $this->integer()->notNull(),
+      'created_at' => $this->integer()->notNull()
     ]);
     // creates index for column `status`
     $this->createIndex(

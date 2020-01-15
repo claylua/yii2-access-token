@@ -18,7 +18,7 @@ class AccessTokenSearch extends AccessToken
     {
         return [
             [['id', 'status'], 'integer'],
-            [['user_id', 'token', 'updated_at', 'created_at'], 'safe'],
+            [['user_id', 'token', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -68,12 +68,20 @@ class AccessTokenSearch extends AccessToken
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'access_token.id' => $this->id,
-            'status' => $this->status,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
-					])
-							->andFilterWhere(['like', 'user.email', $this->user_id]);
+          'access_token.id' => $this->id,
+          'status' => $this->status,
+        ])
+              ->andFilterWhere([
+                '>=',
+                'access_token.created_at',
+                strtotime($this->created_at)
+              ])
+              ->andFilterWhere([
+                '>=',
+                'access_token.updated_at',
+                strtotime($this->updated_at)
+              ])
+              ->andFilterWhere(['like', 'user.email', $this->user_id]);
 
 
         $query->andFilterWhere(['like', 'token', $this->token]);

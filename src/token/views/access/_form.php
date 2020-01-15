@@ -12,19 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-
-<?php 
-echo $form->field($model, 'status')->dropDownList([
-	'' => 'Select an option',
-	'0' => 'Inactive', 
-	'1' => 'Active', 
-],[]);
-?>
-
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
-    </div>
+Invalid URL
 
     <?php ActiveForm::end(); ?>
 

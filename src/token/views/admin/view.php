@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use claylua\token\assets\AdminAsset;
 
 /* @var $this yii\web\View */
 /* @var $model common\modules\token\models\AccessToken */
@@ -10,6 +11,7 @@ $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Access Tokens'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+AdminAsset::register($this);
 ?>
 <div class="access-token-view">
 
@@ -26,17 +28,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'user.email',
-            'user.username',
-            'status',
-            'token',
-            'updated_at',
-            'created_at',
-        ],
-    ]) ?>
+<?= DetailView::widget([
+  'model' => $model,
+  'attributes' => [
+    'id',
+    'user.email',
+    'user.username',
+    'status',
+    [
+      'attribute' => 'token',
+      'contentOptions' => ['class' => 'truncate'],
+    ],
+    'updated_at:datetime',
+    'created_at:datetime',
+  ],
+]) ?>
 
 </div>

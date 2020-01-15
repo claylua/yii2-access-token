@@ -10,10 +10,11 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use claylua\token\controllers\AccessController as BaseClass;
 /**
  * AdminController implements the CRUD actions for AccessToken model.
  */
-class AdminController extends Controller
+class AdminController extends BaseClass
 {
     /**
      * {@inheritdoc}
@@ -68,41 +69,7 @@ class AdminController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-    private function generateJWT($uid) 
-		{
-			$jwt = Yii::$app->jwt;
-			$signer = $jwt->getSigner('HS256');
-			$key = $jwt->getKey();
-			$time = time();
-			$token = $jwt->getBuilder()
-								->issuedBy($this->module->issuer)// Configures the issuer (iss claim)
-								->permittedFor($this->module->audience)// Configures the audience (aud claim)
-								->identifiedBy($this->module->id, true)// Configures the id (jti claim), replicating as a header item
-								->issuedAt($time)// Configures the time that the token was issue (iat claim)
-								// ->expiresAt($time + 3600)// Configures the expiration time of the token (exp claim)
-								->withClaim('uid', $uid)// Configures a new claim, called "uid"
-								->getToken($signer, $key); // Retrieves the generated token
-			return (string)$token;
-		}
 
-    /**
-     * Creates a new AccessToken model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-		{
-			$model = new AccessToken();
-			$model->load(Yii::$app->request->post());
-			$model->token = $this0>generateJWT($model->user_id);
-			if ($model->save()) {
-				return $this->redirect(['view', 'id' => $model->id]);
-			}
-
-			return $this->render('create', [
-				'model' => $model,
-			]);
-		}
 
     /**
      * Updates an existing AccessToken model.

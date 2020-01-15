@@ -10,6 +10,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
+use sizeg\jwt\Jwt;
+use sizeg\jwt\JwtHttpBearerAuth;
+
+
 /**
  * AccessController implements the CRUD actions for AccessToken model.
  */
@@ -56,18 +60,21 @@ class AccessController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single AccessToken model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+		private function generateJWT($user_id) {
+			$jwt = $this->module->jwt;
+			$signer = $jwt->getSigner('HS256');
+			$key = $jwt->getKey();
+			$time = time();
+			$token = $jwt->getBuilder()
+								->issuedBy($this->module->issuer)// Configures the issuer (iss claim)
+								->permittedFor($this->module->audience)// Configures the audience (aud claim)
+								->identifiedBy($this->module->id, true)// Configures the id (jti claim), replicating as a header item
+								->issuedAt($time)// Configures the time that the token was issue (iat claim)
+							//->expiresAt($time + 3600)// Configures the expiration time of the token (exp claim)
+								->withClaim('uid', $user_id)// Configures a new claim, called "uid"
+								->getToken($signer, $key); // Retrieves the generated token
+			return (string)$token;
+		}
 
     /**
      * Creates a new AccessToken model.
@@ -75,37 +82,25 @@ class AccessController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {
-        $model = new AccessToken();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		{
+			$model = new AccessToken();
+      if (Yii::$app->request->post()){
+        $model->load(Yii::$app->request->post());
+        if(!$model->user_id) {
+          $model->user_id =  Yii::$app->user->id;
         }
+        $model->token = $this->generateJWT($model->user_id);
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Updates an existing AccessToken model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->save()) {
+          return $this->redirect(['index']);
         }
+      }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
+			return $this->render('create', [
+				'model' => $model,
+			]);
+		}
+
 
     /**
      * Deletes an existing AccessToken model.
