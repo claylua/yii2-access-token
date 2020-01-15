@@ -23,42 +23,42 @@ AdminAsset::register($this);
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'summary' => '',
-        'columns' => [
-          [
-            'attribute' => 'token',
-            'contentOptions' => ['class' => 'truncate'],
-          ],
-          // 'updated_at:datetime',
-          'created_at:datetime',
+<?= GridView::widget([
+  'dataProvider' => $dataProvider,
+  'filterModel' => $searchModel,
+  'summary' => '',
+  'columns' => [
+    [
+      'attribute' => 'token',
+      'contentOptions' => ['class' => 'truncate'],
+    ],
+    // 'updated_at:datetime',
+    'created_at:datetime',
 
-					[
-						'class' => 'yii\grid\ActionColumn',
-						'template' => '{delete}',
-						'buttons' => [
-							'delete' => function ($url, $model) {
-								return Html::a('revoke', $url, [
-									'title' => Yii::t('app', 'revoke'),
-									'class' => 'btn btn-xs btn-danger btn-block',
-									'data-method'=>'post',
-									'data-confirm'=>'Are you sure you want to revoke this token?',
-									'data-pjax'=>1
-								]);
-							}
+    [
+      'class' => 'yii\grid\ActionColumn',
+      'template' => '{delete}',
+      'buttons' => [
+        'delete' => function ($url, $model) {
+          return Html::a('revoke', $url, [
+            'title' => Yii::t('app', 'revoke'),
+            'class' => 'btn btn-xs btn-danger btn-block',
+            'data-method'=>'post',
+            'data-confirm'=>'Are you sure you want to revoke this token?',
+            'data-pjax'=>1
+          ]);
+        }
 
 ],
-	'visibleButtons' =>
-	[
-		'update' => false,
-		'view' => false,
-		'delete' => true
-	]
+  'visibleButtons' =>
+  [
+    'update' => false,
+    'view' => false,
+    'delete' => true
+  ]
 ],
         ],
-    ]); ?>
+      ]); ?>
 
     <?php Pjax::end(); ?>
 
